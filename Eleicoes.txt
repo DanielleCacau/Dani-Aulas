@@ -1,0 +1,101 @@
+Enter password: *****
+Welcome to the MySQL monitor.
+
+mysql> create database Eleicoes;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use Eleicoes;
+Database changed
+mysql> create table Partido(
+    -> siglaPartido int not null,
+    -> nome varchar(80),
+    -> primary key(siglaPartido)
+    -> );
+Query OK, 0 rows affected (0.85 sec)
+
+mysql> create table Politico(
+    -> numPolitico int not null,
+    -> nome varchar(90),
+    -> partido int,
+    -> primary key(numPolitico),
+    -> foreign key(partido) references Partido(siglaPartido)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> create table Voto(
+    -> idVoto int not null,
+    -> nomeEleitor varchar(90),
+    -> palitico int,
+    -> primary key(idVoto),
+    -> foreign key(politico)
+    -> references Politico(numPolitico)
+    -> );
+ERROR 1072 (42000): Key column 'politico' doesn't exist in table
+mysql> create table Voto(
+    -> idVoto int not null,
+    -> nomeEleitor varchar(90),
+    -> palitico int,
+    -> primary key(idVoto),
+    -> foreign key(palitico) references Politico(numPolitico)
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> alter table Politico
+    -> add qnteVotos int not null;
+Query OK, 0 rows affected (0.53 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Politico
+    -> add sexo varchar(1) check (sexo in ("M", "F"));
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> alter table Politico
+    -> drop qnteVotos;
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Voto
+    -> change column nomeEleitor eleitor varchar(90);
+Query OK, 0 rows affected (0.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Voto
+    -> drop eleitor;
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table Eleitor9
+    -> ;
+ERROR 1113 (42000): A table must have at least 1 column
+mysql> create table Eleitor(
+    -> eleitor int not null,
+    -> primary key(eleitor)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> alter table Voto
+    -> add eleitor int not null;
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Voto
+    -> add foreign key(eleitor) references Eleitor(eleitor)
+    -> ;
+Query OK, 0 rows affected (0.27 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show tables
+    -> ;
++--------------------+
+| Tables_in_eleicoes |
++--------------------+
+| eleitor            |
+| partido            |
+| politico           |
+| voto               |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql>
